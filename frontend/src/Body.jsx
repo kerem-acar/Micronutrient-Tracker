@@ -1,0 +1,245 @@
+import React from "react"
+import { useState, useEffect } from "react";
+import axios from "axios";
+import api from './api';
+
+function Body() {
+    
+    const initialFormState = {
+        description: "",
+        size: ""
+    };
+    
+    const [formData, setFormData] = useState(initialFormState);
+    const [rdaData, setRdaData] = useState({})
+    const [nutrientData, setNutrientData] = useState({})
+    const [doFetch, setDoFetch] = useState(false);
+    const [showError, setShowError] = useState(false);
+    const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading1, setIsLoading1] = useState(false);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: value
+        }));
+    };
+    
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        setError(null);
+        setIsLoading(true);
+
+        if (!formData.description || !formData.size) {
+            setError("All fields are required")
+            setIsLoading(false);
+            setShowError(true);
+            setFormData(initialFormState);
+            return;
+        }
+        try{
+            const patchResponse = await api.patch('/users/', formData)
+            setFormData(initialFormState);
+            setDoFetch(true);
+        }
+        catch (error) {
+            if (error.response && error.response.data && error.response.data.detail) {
+                setError(error.response.data.detail)
+            } else {
+                setError("An unexpected error occurred")
+            }
+            setShowError(true);
+        }
+        finally{
+            setIsLoading(false);
+            setFormData(initialFormState);
+        }
+    };
+    
+
+    useEffect(() => {
+        const getUserData = async () => {
+            try{
+                const getResponse = await api.get('/users/me/');
+                const userData = getResponse.data
+                const fetchedRdaData = userData.nutrient_rdas
+                setRdaData(fetchedRdaData)
+            }
+            catch{
+                console.log("Error fetching user data")
+            }
+        };
+
+        getUserData();
+    }, []);
+
+    useEffect(() => {
+
+        if (!doFetch) return;
+        
+        const getNutrientData = async () => {
+            try{
+                const response = await api.get('/users/me/');
+                const data = response.data
+                const fetchedNutrientData = data.nutrient_current
+                setNutrientData(fetchedNutrientData)
+            }
+        
+            catch{
+                console.log("Error fetching user data")
+            }
+            finally{
+                setDoFetch(false);
+            }
+        };
+        getNutrientData();
+    }, [doFetch]);
+
+    const getPercentage = (value1, value2) => {
+        try{const result = (value1 / value2) * 100
+            if (isNaN(result) || !isFinite(result)) {
+                return 0;
+            }
+            return Number(result.toFixed(2));
+        }
+        catch{
+            return 0;
+        }
+    };
+
+    const resetNutrients = async () => {
+        setError(null);
+        setIsLoading1(true);
+        try{
+            const reset = await api.put('/users/', {});
+            setDoFetch(true);
+        }
+        catch (error) {
+            if (error.response && error.response.data && error.response.data.detail) {
+                setError(error.response.data.detail)
+            } else {
+                setError("An unexpected error occurred")
+            }
+            setShowError(true);
+        }
+        finally{
+            setIsLoading1(false);
+        }
+    };
+
+    const nutrients = [
+        { name: "Vitamin A", key: "vitamin_a", unit: "ug", type: "vitamin" },
+        { name: "Vitamin B1", key: "vitamin_b1", unit: "mg", type: "vitamin" },
+        { name: "Vitamin B3", key: "vitamin_b3", unit: "mg", type: "vitamin" },
+        { name: "Vitamin B5", key: "vitamin_b5", unit: "mg", type: "vitamin" },
+        { name: "Vitamin B6", key: "vitamin_b6", unit: "mg", type: "vitamin" },
+        { name: "Vitamin B7", key: "vitamin_b7", unit: "ug", type: "vitamin" },
+        { name: "Vitamin B9", key: "vitamin_b9", unit: "mg", type: "vitamin" },
+        { name: "Vitamin B12", key: "vitamin_b12", unit: "ug", type: "vitamin" },
+        { name: "Vitamin C", key: "vitamin_c", unit: "ug", type: "vitamin" },
+        { name: "Vitamin D", key: "vitamin_d", unit: "ug", type: "vitamin" },
+        { name: "Vitamin E", key: "vitamin_e", unit: "mg", type: "vitamin" },
+        { name: "Vitamin K", key: "vitamin_k", unit: "ug", type: "vitamin" },
+        { name: "Calcium", key: "calcium", unit: "mg", type: "mineral" },
+        { name: "Copper", key: "copper", unit: "ug", type: "mineral" },
+        { name: "Chromium", key: "chromium", unit: "ug", type: "mineral" },
+        { name: "Iron", key: "iron", unit: "mg", type: "mineral" },
+        { name: "Iodine", key: "iodine", unit: "ug", type: "mineral" },
+        { name: "Magnesium", key: "magnesium", unit: "mg", type: "mineral" },
+        { name: "Manganese", key: "manganese", unit: "mg", type: "mineral" },
+        { name: "Molybdenum", key: "molybdenum", unit: "ug", type: "mineral" },
+        { name: "Potassium", key: "potassium", unit: "mg", type: "mineral" },
+        { name: "Phosphorus", key: "phosphorus", unit: "mg", type: "mineral" },
+        { name: "Selenium", key: "selenium", unit: "ug", type: "mineral" },
+        { name: "Sodium", key: "sodium", unit: "mg", type: "mineral" },
+        { name: "Zinc", key: "zinc", unit: "mg", type: "mineral" },
+    ];
+
+    const vitamins = nutrients.filter(n => n.type === 'vitamin')
+    const minerals = nutrients.filter(n => n.type === 'mineral')
+
+    const maxRows = Math.max(vitamins.length, minerals.length)
+
+    return(
+        <div className="bg-gray-700 min-h-screen overflow-auto">        
+            <div className={`fixed inset-0 flex items-center justify-center z-50 ${!showError ? 'hidden': ''}`}>
+                <div className="bg-gray-600 rounded-lg shadow-md p-10">
+                    <h2 className="text-red-500 font-medium font-sans text-3xl pb-3">{error}</h2>
+                    <div className="flex justify-center">
+                        <button onClick={() => setShowError(false)} className="w-20 py-1 px-2 bg-blue-600 rounded-md text-white font-sans font-medium cursor-pointer hover:bg-blue-500">Ok</button>
+                    </div>
+                </div>
+            </div>
+            <div className="flex flex-row space-x-60 justify-end pt-10 pr-20">
+                <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg shadow-md mb-auto">
+                    <div>
+                        <label className="block text-white font-medium font-sans text-xl">Food Description</label> 
+                    </div>
+                    <div>
+                        <input name="description" value={formData.description} onChange={handleChange} className="block w-80 bg-gray-600 rounded-md mt-2 px-3 py-1.5 text-white focus:outline-2 focus:outline-blue-600"></input>
+                    </div>
+                    <div className="mt-3">
+                        <label className="block text-white font-medium font-sans text-xl">Serving Size (grams)</label> 
+                    </div>
+                    <div>
+                        <input name="size" type="number" value={formData.size} onChange={handleChange} className="block w-80 bg-gray-600 rounded-md mt-2 px-3 py-1.5 text-white focus:outline-2 focus:outline-blue-600"></input>
+                    </div>
+                    <div className="mt-5">
+                        <button type="submit" disabled={isLoading} className={`block w-80 ${isLoading ? 'bg-blue-500': 'bg-blue-600'} rounded-md py-1.5 px-3 text-white font-sans font-medium cursor-pointer hover:bg-blue-500`}>{isLoading ? 'Tracking...' : 'Track'}</button>
+                    </div>
+                </form>    
+                <div className="rounded-lg shadow-md bg-gray-800">
+                    <table className="table-flex w-auto">
+                        <thead>
+                            <tr>
+                                <th className="w-1/6 text-white font-sans font-bold text-xl px-6 py-2">Vitamins</th>
+                                <th className="w-1/6 text-white font-sans font-bold text-xl px-6 py-2">Progress</th>
+                                <th className="w-1/6 text-white font-sans font-bold text-xl px-6 py-2">Goal</th>
+                                <th className="w-1/6 text-white font-sans font-bold text-xl px-6 py-2">Minerals</th>
+                                <th className="w-1/6 text-white font-sans font-bold text-xl px-6 py-2">Progress</th>
+                                <th className="w-1/6 text-white font-sans font-bold text-xl px-6 py-2">Goal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {Array.from({ length: maxRows }).map((_, rowIndex) => {
+                                const vitamin = vitamins[rowIndex];
+                                const mineral = minerals[rowIndex];
+
+                                return (
+                                    <tr key={rowIndex}>
+                                        <td className="text-white font-sans font-medium text-[15px] px-6 py-1.5">
+                                            {vitamin ? vitamin.name : ''}
+                                        </td>
+                                        <td className="text-white font-sans font-medium text-[15px] px-6 py-1.5">
+                                            {vitamin ? `${getPercentage(nutrientData[vitamin.key], rdaData[vitamin.key])}%` : ''}
+                                        </td>
+                                        <td className="text-white font-sans font-medium text-[15px] px-6 py-1.5 whitespace-nowrap">
+                                            {vitamin ? `${rdaData[vitamin.key] || ""} ${vitamin.unit}` : ''}
+                                        </td>
+                                        <td className="text-white font-sans font-medium text-[15px] px-6 py-1.5">
+                                            {mineral ? mineral.name : ''}
+                                        </td>
+                                        <td className="text-white font-sans font-medium text-[15px] px-6 py-1.5">
+                                            {mineral ? `${getPercentage(nutrientData[mineral.key], rdaData[mineral.key])}%` : ''}
+                                        </td>
+                                        <td className="text-white font-sans font-medium text-[15px] px-6 py-1.5 whitespace-nowrap">
+                                            {mineral ? `${rdaData[mineral.key] || ""} ${mineral.unit}` : ''}
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                    <div className="flex justify-center py-6">
+                        <button onClick={resetNutrients} disabled={isLoading1} className={`w-30 ${isLoading1 ? 'bg-blue-500' : 'bg-blue-600'} rounded-md py-1.5 px-3 text-white font-sans font-medium cursor-pointer hover:bg-blue-500`}>{isLoading1 ? 'Resetting...' : 'Reset'}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+};
+
+export default Body;
