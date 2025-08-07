@@ -1,1 +1,3 @@
 # Micronutrient-Tracker
+## Description 
+This repository contains the code behind the Micronutrient Tracker web application, which allows users to track their intake of essential vitamins and minerals. Currently, you can find the Micronutrient Tracker at https://tracknutrients.app
