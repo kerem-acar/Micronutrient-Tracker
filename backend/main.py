@@ -7,8 +7,8 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 import jwt
 from jwt.exceptions import InvalidTokenError, ExpiredSignatureError
-from get_rdas import get_mineral_RDAs, get_vitamin_RDAs, get_combined_RDAs
-from get_content import get_combined_content, get_mineral_content, get_vitamin_content, blank_nutrients
+from get_rdas import get_nutrient_RDAs
+from get_content import get_nutritional_content, blank_nutrients
 from pydantic import BaseModel
 from datetime import datetime, timedelta, timezone
 import os 
@@ -25,6 +25,12 @@ class Gender(str, Enum):
     MALE = "Male"
     FEMALE = "Female"
 
+class Unit(str, Enum):
+    GRAMS = "grams"
+    OUNCES = "ounces"
+    MILLILITERS = "milliliters"
+    CUPS = "cups"
+
 
 class User(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -34,6 +40,7 @@ class User(SQLModel, table=True):
     gender: Gender = Field(index=True)
     description: Optional[str] = Field(index=True)
     size: Optional[int] = Field(index=True)
+    unit: Optional[Unit] = Field(index=True)
     nutrient_rdas: Optional[Dict[str, float]] = Field(default_factory=dict, sa_column=Column(JSON))
     nutrient_current: Optional[Dict[str, float]] = Field(default_factory=dict, sa_column=Column(JSON))
 
@@ -248,7 +255,7 @@ async def create_user(user: User, session: SessionDep):
     if not password_validation:
         raise HTTPException(status_code=400, detail="Password must be at least 12 characters long and contain at least one number and one special character")
     user.password = hash_password(user.password)
-    user_rdas = await get_combined_RDAs(user.age, user.gender)
+    user_rdas = await get_nutrient_RDAs(user.age, user.gender)
     if user_rdas:
         user.nutrient_rdas = user_rdas
     if not user_rdas:
@@ -294,8 +301,9 @@ async def get_description_and_size(current_user: Annotated[User, Depends(get_cur
 
     user.description = update_data["description"]
     user.size = update_data["size"]
+    user.unit = update_data["unit"]
     
-    food_data = await get_combined_content(user.description, user.size)
+    food_data = await get_nutritional_content(user.description, user.size, user.unit)
 
     if food_data == blank_nutrients:
         raise HTTPException(status_code=502, detail="External API call failed")

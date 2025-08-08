@@ -1,10 +1,7 @@
 from google import genai
 from pydantic import BaseModel
-import os
-import logging
 from create_logger import setup_logger
 from google.genai import errors
-import asyncio
 from get_secret import fetch_secret
 
 logger = setup_logger(__name__)
@@ -12,7 +9,7 @@ logger = setup_logger(__name__)
 API_KEY = fetch_secret('gemini_api_key', 'GOOGLE_API_KEY')
 client = genai.Client(api_key=API_KEY)
 
-class VitaminContent(BaseModel):
+class NutritionalContent(BaseModel):
     vitamin_a: float
     vitamin_b1: float
     vitamin_b3: float
@@ -25,30 +22,6 @@ class VitaminContent(BaseModel):
     vitamin_d: float
     vitamin_e: float
     vitamin_k: float
-
-
-async def get_vitamin_content(description: str | None, serving: int | None):
-    
-    try:
-        response = await client.aio.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=f"What is the nutritional content of {serving} grams of {description} in terms of the following vitamins: Vitamin A, Vitamin B1, Vitamin B3, Vitamin B5, Vitamin B6, Vitamin B7, Vitamin B9, Vitamin B12, Vitamin C, Vitamin D, Vitamin E, and Vitamin K.",
-            config={
-                "response_mime_type": "application/json",
-                "response_schema": VitaminContent,
-            },
-        )
-
-        return response.parsed.model_dump()
-    
-    
-    except errors.APIError as e:
-        logger.warning(f"Status code {e.code}, message: {e.message}", exc_info=True)
-        return None
-    except Exception as e:
-        logger.warning(f"Unexpected error {e}", exc_info=True)
-        return None
-class MineralContent(BaseModel):
     calcium: float
     copper: float
     chromium: float
@@ -63,45 +36,27 @@ class MineralContent(BaseModel):
     sodium: float
     zinc: float
 
-async def get_mineral_content(description: str | None, serving: int | None):
+async def get_nutritional_content(description: str | None, serving: int | None, unit: str | None):
     
     try:
         response = await client.aio.models.generate_content(
             model="gemini-2.5-flash",
-            contents=f"What is the nutritional content of {serving} grams of {description} in terms of the following minerals: calcium, copper, chromium, iron, iodine, magnesium, manganese, molybdenum, potassium, phosphorus, selenium, sodium, and zinc.",
+            contents=f"What is the nutritional content of {serving} {unit} of {description} in terms of the following vitamins and minerals: Vitamin A, Vitamin B1, Vitamin B3, Vitamin B5, Vitamin B6, Vitamin B7, Vitamin B9, Vitamin B12, Vitamin C, Vitamin D, Vitamin E, Vitamin K, calcium, copper, chromium, iron, iodine, magnesium, manganese, molybdenum, potassium, phosphorus, selenium, sodium, and zinc.",
             config={
                 "response_mime_type": "application/json",
-                "response_schema": MineralContent,
+                "response_schema": NutritionalContent,
             },
         )
 
         return response.parsed.model_dump()
     
+    
     except errors.APIError as e:
         logger.warning(f"Status code {e.code}, message: {e.message}", exc_info=True)
-        return None
+        return blank_nutrients
     except Exception as e:
         logger.warning(f"Unexpected error {e}", exc_info=True)
-        return None
-    
-async def get_combined_content(description: str | None, serving: int | None):
-    vitamins_task = get_vitamin_content(description, serving)
-    minerals_task = get_mineral_content(description, serving)
-
-    vitamins, minerals = await asyncio.gather(vitamins_task, minerals_task)
-
-    combined_content = {}
-
-    if vitamins:
-        combined_content.update(vitamins)
-    if minerals:
-        combined_content.update(minerals)
-
-    if not vitamins or not minerals:
-        logger.error(f"Failed to retrieve the nutritional content of {serving} grams of {description}")
         return blank_nutrients
-
-    return combined_content
 
 blank_nutrients = {
     "vitamin_a": 0.0,

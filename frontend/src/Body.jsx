@@ -7,13 +7,14 @@ function Body() {
     
     const initialFormState = {
         description: "",
-        size: ""
+        size: "",
+        unit: ""
     };
     
     const [formData, setFormData] = useState(initialFormState);
     const [rdaData, setRdaData] = useState({})
     const [nutrientData, setNutrientData] = useState({})
-    const [doFetch, setDoFetch] = useState(false);
+    const [doFetch, setDoFetch] = useState(true);
     const [showError, setShowError] = useState(false);
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -33,7 +34,7 @@ function Body() {
         setError(null);
         setIsLoading(true);
 
-        if (!formData.description || !formData.size) {
+        if (!formData.description || !formData.size || !formData.unit) {
             setError("All fields are required")
             setIsLoading(false);
             setShowError(true);
@@ -173,34 +174,52 @@ function Body() {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-row space-x-60 justify-end pt-10 pr-20">
-                <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg shadow-md mb-auto">
+            <div className="flex flex-col lg:flex-row lg:space-x-40 p-5 pt-10 md:p-10 lg:p-20 justify-center">
+                <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-sm mb-6 lg:mb-auto">
                     <div>
                         <label className="block text-white font-medium font-sans text-xl">Food Description</label> 
                     </div>
                     <div>
-                        <input name="description" value={formData.description} onChange={handleChange} className="block w-80 bg-gray-600 rounded-md mt-2 px-3 py-1.5 text-white focus:outline-2 focus:outline-blue-600"></input>
+                        <input name="description" value={formData.description} onChange={handleChange} className="block w-full bg-gray-600 rounded-md mt-2 px-3 py-1.5 text-white focus:outline-2 focus:outline-blue-600"></input>
                     </div>
                     <div className="mt-3">
-                        <label className="block text-white font-medium font-sans text-xl">Serving Size (grams)</label> 
+                        <label className="block text-white font-medium font-sans text-xl">Serving Size</label> 
                     </div>
                     <div>
-                        <input name="size" type="number" value={formData.size} onChange={handleChange} className="block w-80 bg-gray-600 rounded-md mt-2 px-3 py-1.5 text-white focus:outline-2 focus:outline-blue-600"></input>
+                        <input name="size" type="number" value={formData.size} onChange={handleChange} className="block w-full bg-gray-600 rounded-md mt-2 px-3 py-1.5 text-white focus:outline-2 focus:outline-blue-600"></input>
+                    </div>
+                    <div className="flex flex-col mt-3">
+                        <div className="flex items-center space-x-1">
+                            <input className="h-3 w-3" type="radio" id="grams" name="unit" value="GRAMS" onChange={handleChange} checked={formData.gender === 'MALE'}></input>
+                            <label className="text-white font-medium font-sans text-base" htmlFor="grams">Grams</label>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                            <input className="h-3 w-3" type="radio" id="ounces" name="unit" value="OUNCES" onChange={handleChange} checked={formData.gender === 'FEMALE' }></input>
+                            <label className="text-white font-medium font-sans text-base" htmlFor="ounces">Ounces</label>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                            <input className="h-3 w-3" type="radio" id="milliliters" name="unit" value="MILLILITERS" onChange={handleChange} checked={formData.gender === 'FEMALE' }></input>
+                            <label className="text-white font-medium font-sans text-base" htmlFor="milliliters">Milliliters</label>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                            <input className="h-3 w-3" type="radio" id="cups" name="unit" value="CUPS" onChange={handleChange} checked={formData.gender === 'FEMALE' }></input>
+                            <label className="text-white font-medium font-sans text-base" htmlFor="cups">Cups</label>
+                        </div>
                     </div>
                     <div className="mt-5">
-                        <button type="submit" disabled={isLoading} className={`block w-80 ${isLoading ? 'bg-blue-500': 'bg-blue-600'} rounded-md py-1.5 px-3 text-white font-sans font-medium cursor-pointer hover:bg-blue-500`}>{isLoading ? 'Tracking...' : 'Track'}</button>
+                        <button type="submit" disabled={isLoading} className={`block w-full ${isLoading ? 'bg-blue-500': 'bg-blue-600'} rounded-md py-1.5 px-3 text-white font-sans font-medium cursor-pointer hover:bg-blue-500`}>{isLoading ? 'Tracking...' : 'Track'}</button>
                     </div>
                 </form>    
-                <div className="rounded-lg shadow-md bg-gray-800">
-                    <table className="table-flex w-auto">
+                <div className="rounded-lg shadow-md bg-gray-800 w-full overflow-x-auto">
+                    <table className="min-w-full">
                         <thead>
                             <tr>
-                                <th className="w-1/6 text-white font-sans font-bold text-xl px-6 py-2">Vitamins</th>
-                                <th className="w-1/6 text-white font-sans font-bold text-xl px-6 py-2">Progress</th>
-                                <th className="w-1/6 text-white font-sans font-bold text-xl px-6 py-2">Goal</th>
-                                <th className="w-1/6 text-white font-sans font-bold text-xl px-6 py-2">Minerals</th>
-                                <th className="w-1/6 text-white font-sans font-bold text-xl px-6 py-2">Progress</th>
-                                <th className="w-1/6 text-white font-sans font-bold text-xl px-6 py-2">Goal</th>
+                                <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Vitamins</th>
+                                <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Progress</th>
+                                <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Goal</th>
+                                <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Minerals</th>
+                                <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Progress</th>
+                                <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Goal</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -210,22 +229,22 @@ function Body() {
 
                                 return (
                                     <tr key={rowIndex}>
-                                        <td className="text-white font-sans font-medium text-[15px] px-6 py-1.5">
+                                        <td className="text-white font-sans font-medium text-md px-2 py-1.5 md:px-6">
                                             {vitamin ? vitamin.name : ''}
                                         </td>
-                                        <td className="text-white font-sans font-medium text-[15px] px-6 py-1.5">
+                                        <td className="text-white font-sans font-medium text-md px-2 py-1.5 md:px-6">
                                             {vitamin ? `${getPercentage(nutrientData[vitamin.key], rdaData[vitamin.key])}%` : ''}
                                         </td>
-                                        <td className="text-white font-sans font-medium text-[15px] px-6 py-1.5 whitespace-nowrap">
+                                        <td className="text-white font-sans font-medium text-md px-2 py-1.5 md:px-6 whitespace-nowrap">
                                             {vitamin ? `${rdaData[vitamin.key] || ""} ${vitamin.unit}` : ''}
                                         </td>
-                                        <td className="text-white font-sans font-medium text-[15px] px-6 py-1.5">
+                                        <td className="text-white font-sans font-medium text-md px-2 py-1.5 md:px-6">
                                             {mineral ? mineral.name : ''}
                                         </td>
-                                        <td className="text-white font-sans font-medium text-[15px] px-6 py-1.5">
+                                        <td className="text-white font-sans font-medium text-md px-2 py-1.5 md:px-6">
                                             {mineral ? `${getPercentage(nutrientData[mineral.key], rdaData[mineral.key])}%` : ''}
                                         </td>
-                                        <td className="text-white font-sans font-medium text-[15px] px-6 py-1.5 whitespace-nowrap">
+                                        <td className="text-white font-sans font-medium text-md px-2 py-1.5 md:px-6 whitespace-nowrap">
                                             {mineral ? `${rdaData[mineral.key] || ""} ${mineral.unit}` : ''}
                                         </td>
                                     </tr>

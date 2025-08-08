@@ -10,7 +10,7 @@ function Login() {
         username: '',
         password: ''
     };
-
+    
     const [formData, setFormData] = useState(initialFormState)
     const [showSuccess, setShowSuccess] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -60,43 +60,43 @@ function Login() {
     };
     
     return(
-         <div className="bg-gray-700 min-h-screen pb-20">
-            <nav className="absolute top-0 left-0 py-2 px-4">
+         <div className="bg-gray-700 min-h-screen pb-10 sm:pb-20">
+            <nav className="absolute top-0 left-0 p-4">
                 <ul>
                     <li>
-                        <Link to="/" className="text-white font-sans text-4xl font-medium hover:text-amber-200">Home</Link>
+                        <Link to="/" className="text-white font-sans text-xl font-medium hover:text-amber-200 sm:text-2xl lg:text-4xl">Home</Link>
                     </li>
                 </ul>
             </nav>
             <div className={`fixed inset-0 flex items-center justify-center z-50 ${!showError ? 'hidden': ''}`}>
-                <div className="bg-gray-600 rounded-lg shadow-md p-10">
-                    <h2 className="text-red-500 font-medium font-sans text-3xl pb-3">{error}</h2>
+                <div className="bg-gray-600 rounded-lg shadow-md p-6 m-4 text-center sm:p-10 sm:m-0">
+                    <h2 className="text-red-500 font-medium font-sans text-xl pb-3 sm:text-2xl md:text-3xl">{error}</h2>
                     <div className="flex justify-center">                        
                         <button onClick={() => setShowError(false)} className="w-auto py-1 px-8 bg-blue-600 rounded-md text-white font-sans font-medium cursor-pointer hover:bg-blue-500">Ok</button>
                     </div>
                 </div>
             </div>
             <div className={`fixed inset-0 flex items-center justify-center z-50 ${!showSuccess ? 'hidden': ''}`}>
-                <div className="bg-gray-600 rounded-lg shadow-md p-10">
-                    <h2 className="text-white font-medium font-sans text-3xl pb-3">Welcome!</h2>
+                <div className="bg-gray-600 rounded-lg shadow-md p-6 m-4 text-center sm:p-10 sm:m-0">
+                    <h2 className="text-white font-medium font-sans text-xl pb-3 sm:text-2xl md:text-3xl">Welcome!</h2>
                     <div className="flex justify-center">                        
                         <Link to="/" className="w-auto py-1 px-8 bg-blue-600 rounded-md text-white font-sans font-medium cursor-pointer hover:bg-blue-500">Ok</Link>     
                     </div>
                 </div>
             </div>
             <div className="flex justify-center">
-                <h2 className="font-sans text-white font-bold text-3xl pt-28 text-center">Sign in to your account</h2>
+                <h2 className="font-sans text-white font-bold text-2xl pt-16 text-center sm:text-3xl sm:pt-28">Sign in to your account</h2>
             </div>
-            <div className="pt-5 sm:mx-auto sm:w-full sm:max-w-sm">
+            <div className="mt-5 mx-auto w-full max-w-sm px-4 sm:px-0">
                 <form className="bg-gray-800 p-6 rounded-lg shadow-md" onSubmit={handleSubmit}>
                     <div>
-                        <label className="text-white font-medium font-sans text-xl">Username</label> 
+                        <label className="text-white font-medium font-sans text-lg sm:text-x">Username</label> 
                     </div>
                     <div>
                         <input name="username" value={formData.username} onChange={handleChange} className="block w-full bg-gray-600 rounded-md mt-2 px-3 py-1.5 text-white focus:outline-2 focus:outline-blue-600"></input>
                     </div>
                     <div className="mt-3">
-                        <label className="text-white font-medium font-sans text-xl">Password</label> 
+                        <label className="text-white font-medium font-sans text-lg sm:text-x">Password</label> 
                     </div>
                     <div>
                         <input name="password" value={formData.password} onChange={handleChange} type="password" className="block w-full bg-gray-600 rounded-md mt-2 px-3 py-1.5 text-white focus:outline-2 focus:outline-blue-600"></input>
