@@ -190,19 +190,19 @@ function Body() {
                     </div>
                     <div className="flex flex-col mt-3">
                         <div className="flex items-center space-x-1">
-                            <input className="h-3 w-3" type="radio" id="grams" name="unit" value="GRAMS" onChange={handleChange} checked={formData.gender === 'MALE'}></input>
+                            <input className="h-3 w-3" type="radio" id="grams" name="unit" value="GRAMS" onChange={handleChange} checked={formData.unit === 'GRAMS'}></input>
                             <label className="text-white font-medium font-sans text-base" htmlFor="grams">Grams</label>
                         </div>
                         <div className="flex items-center space-x-1">
-                            <input className="h-3 w-3" type="radio" id="ounces" name="unit" value="OUNCES" onChange={handleChange} checked={formData.gender === 'FEMALE' }></input>
+                            <input className="h-3 w-3" type="radio" id="ounces" name="unit" value="OUNCES" onChange={handleChange} checked={formData.unit === 'OUNCES' }></input>
                             <label className="text-white font-medium font-sans text-base" htmlFor="ounces">Ounces</label>
                         </div>
                         <div className="flex items-center space-x-1">
-                            <input className="h-3 w-3" type="radio" id="milliliters" name="unit" value="MILLILITERS" onChange={handleChange} checked={formData.gender === 'FEMALE' }></input>
+                            <input className="h-3 w-3" type="radio" id="milliliters" name="unit" value="MILLILITERS" onChange={handleChange} checked={formData.unit === 'MILLILITERS' }></input>
                             <label className="text-white font-medium font-sans text-base" htmlFor="milliliters">Milliliters</label>
                         </div>
                         <div className="flex items-center space-x-1">
-                            <input className="h-3 w-3" type="radio" id="cups" name="unit" value="CUPS" onChange={handleChange} checked={formData.gender === 'FEMALE' }></input>
+                            <input className="h-3 w-3" type="radio" id="cups" name="unit" value="CUPS" onChange={handleChange} checked={formData.unit === 'CUPS' }></input>
                             <label className="text-white font-medium font-sans text-base" htmlFor="cups">Cups</label>
                         </div>
                     </div>
