@@ -1,9 +1,9 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-west-2:934596540515:task-definition/Micronutrient-Tracker-Frontend-Run-Container:5",
+    "taskDefinitionArn": "arn:aws:ecs:us-west-2:934596540515:task-definition/Micronutrient-Tracker-Frontend-Run-Container:6",
     "containerDefinitions": [
         {
             "name": "MT-Frontend-Production-Image",
-            "image": "934596540515.dkr.ecr.us-west-2.amazonaws.com/micronutrient-tracker-frontend-production",
+            "image": "934596540515.dkr.ecr.us-west-2.amazonaws.com/micronutrient-tracker-frontend-production:latest",
             "cpu": 0,
             "portMappings": [
                 {
