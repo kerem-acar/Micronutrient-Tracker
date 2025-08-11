@@ -1,5 +1,4 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-west-2:934596540515:task-definition/Micronutrient-Tracker-Frontend-Run-Container:6",
     "containerDefinitions": [
         {
             "name": "MT-Frontend-Production-Image",
@@ -36,40 +35,8 @@
     "family": "Micronutrient-Tracker-Frontend-Run-Container",
     "executionRoleArn": "arn:aws:iam::934596540515:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 5,
     "volumes": [],
-    "status": "ACTIVE",
-    "requiresAttributes": [
-        {
-            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
-        },
-        {
-            "name": "ecs.capability.execution-role-awslogs"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.ecr-auth"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
-        },
-        {
-            "name": "ecs.capability.execution-role-ecr-pull"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
-        },
-        {
-            "name": "ecs.capability.task-eni"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
-        }
-    ],
     "placementConstraints": [],
-    "compatibilities": [
-        "EC2",
-        "FARGATE"
-    ],
     "requiresCompatibilities": [
         "FARGATE"
     ],
@@ -79,8 +46,5 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2025-08-11T17:44:52.010Z",
-    "registeredBy": "arn:aws:iam::934596540515:root",
-    "enableFaultInjection": false,
     "tags": []
 }
