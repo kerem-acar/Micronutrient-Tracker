@@ -1,7 +1,4 @@
 __pycache__/
 node_modules/
-Dockerfile
-.dockerignore
-nginx.conf
 .venv/
 app.log
