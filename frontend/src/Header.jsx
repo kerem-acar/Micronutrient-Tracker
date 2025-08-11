@@ -34,7 +34,7 @@ function Header() {
     return(
         <header className="bg-gray-700 relative">
             <div className="flex justify-center pt-15 lg:pt-20">
-                <h1 className="font-sans text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white font-bold">Testing Github Actions</h1>
+                <h1 className="font-sans text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white font-bold">Last Github Actions Test</h1>
             </div>
             <div className={`fixed inset-0 flex items-center justify-center z-50 ${!showLogout ? 'hidden': ''}`}>
                 <div className="bg-gray-600 rounded-lg shadow-md p-10 text-center">
