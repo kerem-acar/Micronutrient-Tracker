@@ -162,8 +162,6 @@ function Body() {
     const vitamins = nutrients.filter(n => n.type === 'vitamin')
     const minerals = nutrients.filter(n => n.type === 'mineral')
 
-    const maxRows = Math.max(vitamins.length, minerals.length)
-
     return(
         <div className="bg-gray-700 min-h-screen overflow-auto">        
             <div className={`fixed inset-0 flex items-center justify-center z-50 ${!showError ? 'hidden': ''}`}>
@@ -209,53 +207,52 @@ function Body() {
                     <div className="mt-5">
                         <button type="submit" disabled={isLoading} className={`block w-full ${isLoading ? 'bg-blue-500': 'bg-blue-600'} rounded-md py-1.5 px-3 text-white font-sans font-medium cursor-pointer hover:bg-blue-500`}>{isLoading ? 'Tracking...' : 'Track'}</button>
                     </div>
-                </form>    
-                <div className="rounded-lg shadow-md bg-gray-800 w-full overflow-x-auto">
-                    <table className="min-w-full">
-                        <thead>
-                            <tr>
-                                <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Vitamins</th>
-                                <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Progress</th>
-                                <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Goal</th>
-                                <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Minerals</th>
-                                <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Progress</th>
-                                <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Goal</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {Array.from({ length: maxRows }).map((_, rowIndex) => {
-                                const vitamin = vitamins[rowIndex];
-                                const mineral = minerals[rowIndex];
-
-                                return (
-                                    <tr key={rowIndex}>
-                                        <td className="text-white font-sans font-medium text-md px-2 py-1.5 md:px-6">
-                                            {vitamin ? vitamin.name : ''}
-                                        </td>
-                                        <td className="text-white font-sans font-medium text-md px-2 py-1.5 md:px-6">
-                                            {vitamin ? `${getPercentage(nutrientData[vitamin.key], rdaData[vitamin.key])}%` : ''}
-                                        </td>
-                                        <td className="text-white font-sans font-medium text-md px-2 py-1.5 md:px-6 whitespace-nowrap">
-                                            {vitamin ? `${rdaData[vitamin.key] || ""} ${vitamin.unit}` : ''}
-                                        </td>
-                                        <td className="text-white font-sans font-medium text-md px-2 py-1.5 md:px-6">
-                                            {mineral ? mineral.name : ''}
-                                        </td>
-                                        <td className="text-white font-sans font-medium text-md px-2 py-1.5 md:px-6">
-                                            {mineral ? `${getPercentage(nutrientData[mineral.key], rdaData[mineral.key])}%` : ''}
-                                        </td>
-                                        <td className="text-white font-sans font-medium text-md px-2 py-1.5 md:px-6 whitespace-nowrap">
-                                            {mineral ? `${rdaData[mineral.key] || ""} ${mineral.unit}` : ''}
-                                        </td>
+                </form>
+                <div className="flex justify-around w-full">   
+                    <div className="rounded-lg shadow-md bg-gray-800 w-1/2 overflow-x-auto mx-2">
+                        <table className="min-w-full">
+                            <thead>
+                                <tr>
+                                    <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Vitamins</th>
+                                    <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Progress</th>
+                                    <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Goal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {vitamins.map((vitamins, index) => (
+                                    <tr key={index}>
+                                        <td className="text-white font-sans font-medium text-md px-2 py-2 md:text-lg md: px-6">{vitamins.name}</td>
+                                        <td className="text-white font-sans font-medium text-md px-2 py-2 md:text-lg md: px-6">{`${getPercentage(nutrientData[vitamins.key], rdaData[vitamins.key])}%`}</td>
+                                        <td className="text-white font-sans font-medium text-md px-2 py-2 md:text-lg md: px-6">{`${rdaData[vitamins.key] || ""} ${vitamins.unit}`}</td>
                                     </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="rounded-lg shadow-md bg-gray-800 w-1/2 overflow-x-auto mx-2">
+                        <table className="min-w-full">
+                            <thead>
+                                <tr>
+                                    <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Minerals</th>
+                                    <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Progress</th>
+                                    <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Goal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {minerals.map((minerals, index) => (
+                                    <tr key={index}>
+                                        <td className="text-white font-sans font-medium text-md px-2 py-2 md:text-lg md: px-6">{minerals.name}</td>
+                                        <td className="text-white font-sans font-medium text-md px-2 py-2 md:text-lg md: px-6">{`${getPercentage(nutrientData[minerals.key], rdaData[minerals.key])}%`}</td>
+                                        <td className="text-white font-sans font-medium text-md px-2 py-2 md:text-lg md: px-6">{`${rdaData[minerals.key] || ""} ${minerals.unit}`}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                     <div className="flex justify-center py-6">
                         <button onClick={resetNutrients} disabled={isLoading1} className={`w-30 ${isLoading1 ? 'bg-blue-500' : 'bg-blue-600'} rounded-md py-1.5 px-3 text-white font-sans font-medium cursor-pointer hover:bg-blue-500`}>{isLoading1 ? 'Resetting...' : 'Reset'}</button>
                     </div>
-                </div>
+                </div> 
             </div>
         </div>
     )
