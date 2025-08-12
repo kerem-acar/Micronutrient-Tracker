@@ -19,6 +19,7 @@ function Body() {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isLoading1, setIsLoading1] = useState(false);
+    const [isLoading2, setIsLoading2] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -111,11 +112,11 @@ function Body() {
         }
     };
 
-    const resetNutrients = async () => {
+    const resetVitamins = async () => {
         setError(null);
         setIsLoading1(true);
         try{
-            const reset = await api.put('/users/', {});
+            const reset = await api.put('/users_vitamins/', {});
             setDoFetch(true);
         }
         catch (error) {
@@ -128,6 +129,26 @@ function Body() {
         }
         finally{
             setIsLoading1(false);
+        }
+    };
+
+    const resetMinerals = async () => {
+        setError(null);
+        setIsLoading2(true);
+        try{
+            const reset = await api.put('/users_minerals/', {});
+            setDoFetch(true);
+        }
+        catch (error) {
+            if (error.response && error.response.data && error.response.data.detail) {
+                setError(error.response.data.detail)
+            } else {
+                setError("An unexpected error occurred")
+            }
+            setShowError(true);
+        }
+        finally{
+            setIsLoading2(false);
         }
     };
 
@@ -224,15 +245,15 @@ function Body() {
                             <tbody>
                                 {vitamins.map((vitamins, index) => (
                                     <tr key={index}>
-                                        <td className="text-white font-sans font-medium text-lg px-2 py-2 md:text-xl md:px-6">{vitamins.name}</td>
-                                        <td className="text-white font-sans font-medium text-lg px-2 py-2 md:text-xl md:px-6">{`${getPercentage(nutrientData[vitamins.key], rdaData[vitamins.key])}%`}</td>
-                                        <td className="text-white font-sans font-medium text-lg px-2 py-2 md:text-xl md:px-6">{`${rdaData[vitamins.key] || ""} ${vitamins.unit}`}</td>
+                                        <td className="text-white font-sans font-medium text-md px-2 py-2 md:text-lg md:px-6">{vitamins.name}</td>
+                                        <td className="text-white font-sans font-medium text-md px-2 py-2 md:text-lg md:px-6">{`${getPercentage(nutrientData[vitamins.key], rdaData[vitamins.key])}%`}</td>
+                                        <td className="text-white font-sans font-medium text-md px-2 py-2 md:text-lg md:px-6">{`${rdaData[vitamins.key] || ""} ${vitamins.unit}`}</td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                         <div className="flex justify-center py-6">
-                            <button onClick={resetNutrients} disabled={isLoading1} className={`w-30 ${isLoading1 ? 'bg-blue-500' : 'bg-blue-600'} rounded-md py-1.5 px-3 text-white font-sans font-medium cursor-pointer hover:bg-blue-500`}>{isLoading1 ? 'Resetting...' : 'Reset'}</button>
+                            <button onClick={resetVitamins} disabled={isLoading1} className={`w-30 ${isLoading1 ? 'bg-blue-500' : 'bg-blue-600'} rounded-md py-1.5 px-3 text-white font-sans font-medium cursor-pointer hover:bg-blue-500`}>{isLoading1 ? 'Resetting...' : 'Reset'}</button>
                         </div>
                     </div>
                     <div className="rounded-lg shadow-md bg-gray-800 w-1/2 overflow-x-auto mx-2">
@@ -250,15 +271,15 @@ function Body() {
                             <tbody>
                                 {minerals.map((minerals, index) => (
                                     <tr key={index}>
-                                        <td className="text-white font-sans font-medium text-lg px-2 py-2 md:text-xl md:px-6">{minerals.name}</td>
-                                        <td className="text-white font-sans font-medium text-lg px-2 py-2 md:text-xl md:px-6">{`${getPercentage(nutrientData[minerals.key], rdaData[minerals.key])}%`}</td>
-                                        <td className="text-white font-sans font-medium text-lg px-2 py-2 md:text-xl md:px-6">{`${rdaData[minerals.key] || ""} ${minerals.unit}`}</td>
+                                        <td className="text-white font-sans font-medium text-md px-2 py-2 md:text-lg md:px-6">{minerals.name}</td>
+                                        <td className="text-white font-sans font-medium text-md px-2 py-2 md:text-lg md:px-6">{`${getPercentage(nutrientData[minerals.key], rdaData[minerals.key])}%`}</td>
+                                        <td className="text-white font-sans font-medium text-md px-2 py-2 md:text-lg md:px-6">{`${rdaData[minerals.key] || ""} ${minerals.unit}`}</td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                         <div className="flex justify-center py-6">
-                            <button onClick={resetNutrients} disabled={isLoading1} className={`w-30 ${isLoading1 ? 'bg-blue-500' : 'bg-blue-600'} rounded-md py-1.5 px-3 text-white font-sans font-medium cursor-pointer hover:bg-blue-500`}>{isLoading1 ? 'Resetting...' : 'Reset'}</button>
+                            <button onClick={resetMinerals} disabled={isLoading2} className={`w-30 ${isLoading2 ? 'bg-blue-500' : 'bg-blue-600'} rounded-md py-1.5 px-3 text-white font-sans font-medium cursor-pointer hover:bg-blue-500`}>{isLoading2 ? 'Resetting...' : 'Reset'}</button>
                         </div>
                     </div>
                 </div> 
