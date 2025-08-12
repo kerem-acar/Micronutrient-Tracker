@@ -213,7 +213,10 @@ function Body() {
                         <table className="min-w-full">
                             <thead>
                                 <tr>
-                                    <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Vitamins</th>
+                                    <th colSpan="3" className="text-white font-sans font-bold text-xl px-2 py-2 md:text-2xl md:px-6">Vitamins</th>
+                                </tr>
+                                <tr>
+                                    <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Name</th>
                                     <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Progress</th>
                                     <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Goal</th>
                                 </tr>
@@ -228,12 +231,18 @@ function Body() {
                                 ))}
                             </tbody>
                         </table>
+                        <div className="flex justify-center py-6">
+                            <button onClick={resetNutrients} disabled={isLoading1} className={`w-30 ${isLoading1 ? 'bg-blue-500' : 'bg-blue-600'} rounded-md py-1.5 px-3 text-white font-sans font-medium cursor-pointer hover:bg-blue-500`}>{isLoading1 ? 'Resetting...' : 'Reset'}</button>
+                        </div>
                     </div>
                     <div className="rounded-lg shadow-md bg-gray-800 w-1/2 overflow-x-auto mx-2">
                         <table className="min-w-full">
                             <thead>
                                 <tr>
-                                    <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Minerals</th>
+                                    <th colSpan="3" className="text-white font-sans font-bold text-xl px-2 py-2 md:text-2xl md:px-6">Minerals</th>
+                                </tr>
+                                <tr>
+                                    <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Name</th>
                                     <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Progress</th>
                                     <th className="text-white font-sans font-bold text-lg px-2 py-2 md:text-xl md:px-6">Goal</th>
                                 </tr>
@@ -248,9 +257,9 @@ function Body() {
                                 ))}
                             </tbody>
                         </table>
-                    </div>
-                    <div className="flex justify-center py-6">
-                        <button onClick={resetNutrients} disabled={isLoading1} className={`w-30 ${isLoading1 ? 'bg-blue-500' : 'bg-blue-600'} rounded-md py-1.5 px-3 text-white font-sans font-medium cursor-pointer hover:bg-blue-500`}>{isLoading1 ? 'Resetting...' : 'Reset'}</button>
+                        <div className="flex justify-center py-6">
+                            <button onClick={resetNutrients} disabled={isLoading1} className={`w-30 ${isLoading1 ? 'bg-blue-500' : 'bg-blue-600'} rounded-md py-1.5 px-3 text-white font-sans font-medium cursor-pointer hover:bg-blue-500`}>{isLoading1 ? 'Resetting...' : 'Reset'}</button>
+                        </div>
                     </div>
                 </div> 
             </div>
