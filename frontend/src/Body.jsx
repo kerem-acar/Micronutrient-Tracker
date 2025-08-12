@@ -193,7 +193,7 @@ function Body() {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col lg:flex-row lg:space-x-40 p-5 pt-10 md:p-10 lg:p-20 justify-center">
+            <div className="flex flex-col lg:flex-row lg:space-x-40 p-10 pt-10 md:p-15 lg:p-20 justify-center">
                 <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-sm mb-6 lg:mb-auto">
                     <div>
                         <label className="block text-white font-medium font-sans text-xl">Food Description</label> 
