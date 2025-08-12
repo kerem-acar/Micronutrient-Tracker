@@ -224,9 +224,9 @@ function Body() {
                             <tbody>
                                 {vitamins.map((vitamins, index) => (
                                     <tr key={index}>
-                                        <td className="text-white font-sans font-medium text-md px-2 py-2 md:text-lg md:px-6">{vitamins.name}</td>
-                                        <td className="text-white font-sans font-medium text-md px-2 py-2 md:text-lg md:px-6">{`${getPercentage(nutrientData[vitamins.key], rdaData[vitamins.key])}%`}</td>
-                                        <td className="text-white font-sans font-medium text-md px-2 py-2 md:text-lg md:px-6">{`${rdaData[vitamins.key] || ""} ${vitamins.unit}`}</td>
+                                        <td className="text-white font-sans font-medium text-lg px-2 py-2 md:text-xl md:px-6">{vitamins.name}</td>
+                                        <td className="text-white font-sans font-medium text-lg px-2 py-2 md:text-xl md:px-6">{`${getPercentage(nutrientData[vitamins.key], rdaData[vitamins.key])}%`}</td>
+                                        <td className="text-white font-sans font-medium text-lg px-2 py-2 md:text-xl md:px-6">{`${rdaData[vitamins.key] || ""} ${vitamins.unit}`}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -250,9 +250,9 @@ function Body() {
                             <tbody>
                                 {minerals.map((minerals, index) => (
                                     <tr key={index}>
-                                        <td className="text-white font-sans font-medium text-md px-2 py-2 md:text-lg md:px-6">{minerals.name}</td>
-                                        <td className="text-white font-sans font-medium text-md px-2 py-2 md:text-lg md:px-6">{`${getPercentage(nutrientData[minerals.key], rdaData[minerals.key])}%`}</td>
-                                        <td className="text-white font-sans font-medium text-md px-2 py-2 md:text-lg md:px-6">{`${rdaData[minerals.key] || ""} ${minerals.unit}`}</td>
+                                        <td className="text-white font-sans font-medium text-lg px-2 py-2 md:text-xl md:px-6">{minerals.name}</td>
+                                        <td className="text-white font-sans font-medium text-lg px-2 py-2 md:text-xl md:px-6">{`${getPercentage(nutrientData[minerals.key], rdaData[minerals.key])}%`}</td>
+                                        <td className="text-white font-sans font-medium text-lg px-2 py-2 md:text-xl md:px-6">{`${rdaData[minerals.key] || ""} ${minerals.unit}`}</td>
                                     </tr>
                                 ))}
                             </tbody>
