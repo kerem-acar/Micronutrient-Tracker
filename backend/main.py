@@ -8,7 +8,7 @@ from passlib.context import CryptContext
 import jwt
 from jwt.exceptions import InvalidTokenError, ExpiredSignatureError
 from get_rdas import get_nutrient_RDAs
-from get_content import get_nutritional_content, blank_nutrients
+from get_content import get_nutritional_content, blank_nutrients, blank_vitamins, blank_minerals
 from pydantic import BaseModel
 from datetime import datetime, timedelta, timezone
 import os 
@@ -317,11 +317,26 @@ async def get_description_and_size(current_user: Annotated[User, Depends(get_cur
 
     return user
 
-@app.put("/users/")
-async def reset_current_nutrients(current_user: Annotated[User, Depends(get_current_user_from_cookie)], session: SessionDep):
+@app.put("/users_vitamins/")
+async def reset_current_vitamins(current_user: Annotated[User, Depends(get_current_user_from_cookie)], session: SessionDep):
     user = current_user
         
-    user.nutrient_current = blank_nutrients
+    nutrients_after_vitamin_reset = {key: blank_vitamins.get(key, user.nutrient_current[key]) for key in user.nutrient_current}
+
+    user.nutrient_current = nutrients_after_vitamin_reset
+
+    session.commit()
+    session.refresh(user)
+
+    return user
+
+@app.put("/users_minerals/")
+async def reset_current_minerals(current_user: Annotated[User, Depends(get_current_user_from_cookie)], session: SessionDep):
+    user = current_user
+        
+    nutrients_after_mineral_reset = {key: blank_minerals.get(key, user.nutrient_current[key]) for key in user.nutrient_current}
+
+    user.nutrient_current = nutrients_after_mineral_reset
 
     session.commit()
     session.refresh(user)
