@@ -321,9 +321,9 @@ async def get_description_and_size(current_user: Annotated[User, Depends(get_cur
 async def reset_current_vitamins(current_user: Annotated[User, Depends(get_current_user_from_cookie)], session: SessionDep):
     user = current_user
         
-    nutrients_after_vitamin_reset = {key: blank_vitamins.get(key, user.nutrient_current[key]) for key in user.nutrient_current}
+    nutrients_post_vitamin_reset = {key: blank_vitamins.get(key, user.nutrient_current[key]) for key in user.nutrient_current}
 
-    user.nutrient_current = nutrients_after_vitamin_reset
+    user.nutrient_current = nutrients_post_vitamin_reset
 
     session.commit()
     session.refresh(user)
@@ -334,9 +334,9 @@ async def reset_current_vitamins(current_user: Annotated[User, Depends(get_curre
 async def reset_current_minerals(current_user: Annotated[User, Depends(get_current_user_from_cookie)], session: SessionDep):
     user = current_user
         
-    nutrients_after_mineral_reset = {key: blank_minerals.get(key, user.nutrient_current[key]) for key in user.nutrient_current}
+    nutrients_post_mineral_reset = {key: blank_minerals.get(key, user.nutrient_current[key]) for key in user.nutrient_current}
 
-    user.nutrient_current = nutrients_after_mineral_reset
+    user.nutrient_current = nutrients_post_mineral_reset
 
     session.commit()
     session.refresh(user)
