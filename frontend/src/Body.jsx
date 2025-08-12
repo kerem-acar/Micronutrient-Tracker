@@ -230,7 +230,7 @@ function Body() {
                     </div>
                 </form>
                 <div className="flex justify-around w-full">   
-                    <div className="rounded-lg shadow-md bg-gray-800 w-1/2 overflow-x-auto mx-2">
+                    <div className="rounded-lg shadow-md bg-gray-800 w-1/2 overflow-x-hidden mx-2">
                         <table className="min-w-full">
                             <thead>
                                 <tr>
@@ -256,7 +256,7 @@ function Body() {
                             <button onClick={resetVitamins} disabled={isLoading1} className={`w-30 ${isLoading1 ? 'bg-blue-500' : 'bg-blue-600'} rounded-md py-1.5 px-3 text-white font-sans font-medium cursor-pointer hover:bg-blue-500`}>{isLoading1 ? 'Resetting...' : 'Reset'}</button>
                         </div>
                     </div>
-                    <div className="rounded-lg shadow-md bg-gray-800 w-1/2 overflow-x-auto mx-2">
+                    <div className="rounded-lg shadow-md bg-gray-800 w-1/2 overflow-x-hidden mx-2">
                         <table className="min-w-full">
                             <thead>
                                 <tr>
